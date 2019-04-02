@@ -1,1 +1,50 @@
-package main
+---
+- name: Deploying RaspberryPi Mysic Player
+  hosts: all
+  connection: ssh
+
+  vars:
+    ansible_ssh_user: pi
+    ansible_become: yes
+    gopath: "/Users/rebelit/go"
+    goroot: "/usr/local/opt/go/libexec"
+
+  tasks:
+    - name: Compile the application
+      shell: "GOOS=linux GOARCH=arm go build -o player ."
+      environment:
+        GOPATH: "{{ gopath }}"
+        GOROOT: "{{ goroot }}"
+      delegate_to: 127.0.0.1
+
+    - name: Create folder
+      file:
+        path: "/etc/apps/"
+        state: directory
+        mode: 0644
+
+    - name: Copy executable
+      copy:
+        src: "player"
+        dest: "/etc/apps/player"
+        mode: a+x
+
+    - name: Copy python GPIO reader
+      copy:
+        src: "files/gpio18.py"
+        dest: "/etc/apps/"
+        mode: a+x
+
+    - name: Copy Service Files
+      copy:
+        src: "files/gpio18.service"
+        dest: "/usr/lib/systemd/system/gpio18.service"
+
+    - name: Unleash the daemon (make new service known)
+      command: systemctl daemon-reload
+
+    - name: restart service
+      service:
+        name: gpio18
+        state: restarted
+        enabled: true
