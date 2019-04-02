@@ -37,7 +37,7 @@ press the button!
 ## Install the button
 * jump gpio 3 (ground) to leg #1 on button
 * jump gpio 18 to leg #2 on button
-* [image]: https://github.com/RebelIT/rpGoMusic/files/image.png
+* [image]: https://github.com/RebelIT/rpGoMusic/blob/master/files/image.png
 * thats it!
 
 
