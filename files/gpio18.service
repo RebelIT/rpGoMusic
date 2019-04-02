@@ -1,0 +1,13 @@
+[Unit]
+Description=gpio18
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStartPre=/bin/sleep 5
+ExecStart=/usr/bin/python2 /etc/apps/player/gpio18.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
