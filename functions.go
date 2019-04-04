@@ -111,8 +111,8 @@ func checkPlayerStatus()(running bool){
 }
 
 
-func starKillTimer(minutes time.Duration){
-	time.Sleep(time.Minute * minutes)
+func starKillTimer(minutes int){
+	time.Sleep(time.Duration(minutes) * time.Minute)
 
 	if err := killPlayer(); err != nil{
 		log.Printf("[WARN] %s\n", err)
