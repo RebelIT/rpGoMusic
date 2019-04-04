@@ -51,7 +51,7 @@ func main(){
 	}
 
 	for i, p := range playlist{
-		log.Printf("[INFO] playing %d of %d: %s\n", i+1, playlistLen,p)
+		log.Printf("[INFO] playing %d of %d: %s\n", i+1, len(playlist),p)
 		if err := playSong(musicDir +"/"+ p); err != nil{
 			break
 		}
