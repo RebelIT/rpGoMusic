@@ -127,14 +127,11 @@ func killPlayer() error {
 	for _, p := range ps{
 		name, _ := p.Name()
 		if name == "player"{
-			log.Printf("[DEBUG] process name matches: %s\n", name)
-			err := p.Kill()
-			if err != nil {
+			if err := p.Terminate(); err != nil{
 				return err
 			}
+			log.Printf("[INFO] stopped omxplayer pid %d\n", p.Pid)
 			found = true
-		} else{
-			//log.Printf("[DENUG] process name does not match: %s\n", name)
 		}
 	}
 
