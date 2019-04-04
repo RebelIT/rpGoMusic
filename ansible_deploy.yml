@@ -19,32 +19,32 @@
 
     - name: Create folder
       file:
-        path: "/etc/apps/"
+        path: "/etc/apps/player"
         state: directory
         mode: 0644
 
     - name: Copy executable
       copy:
         src: "player"
-        dest: "/etc/apps/player"
+        dest: "/etc/apps/player/player"
         mode: a+x
 
     - name: Copy python GPIO reader
       copy:
         src: "files/gpio18.py"
-        dest: "/etc/apps/"
+        dest: "/etc/apps/player/"
         mode: a+x
 
     - name: Copy Service Files
       copy:
-        src: "files/gpio18.service"
-        dest: "/usr/lib/systemd/system/gpio18.service"
+        src: "files/player.service"
+        dest: "/usr/lib/systemd/system/player.service"
 
     - name: Unleash the daemon (make new service known)
       command: systemctl daemon-reload
 
     - name: restart service
       service:
-        name: gpio18
+        name: player
         state: restarted
         enabled: true

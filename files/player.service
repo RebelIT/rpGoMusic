@@ -1,5 +1,5 @@
 [Unit]
-Description=gpio18
+Description=player
 
 [Service]
 Type=simple

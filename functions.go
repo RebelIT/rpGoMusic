@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/shirou/gopsutil/process"
 	"io/ioutil"
 	"log"
@@ -31,7 +32,7 @@ func playSong(songPath string) error {
 	return nil
 }
 
-func createPlaylist(dir string, numberOfSongs int) (playlist []string, error error) {
+func createPlaylist(dir string, numberOfSongs int, useTimePlay bool) (playlist []string, error error) {
 	log.Printf("[INFO] creating playlist\n")
 
 	playlist, err := getAllSongs(dir)
@@ -41,7 +42,12 @@ func createPlaylist(dir string, numberOfSongs int) (playlist []string, error err
 	}
 	log.Printf("[INFO] playlist length: %v\n", len(playlist))
 	randomize(playlist)
-	return trim(playlist, numberOfSongs), nil
+
+	if !useTimePlay{
+		playlist = trim(playlist, numberOfSongs)
+	}
+
+	return playlist, nil
 }
 
 func getAllSongs(dir string) ([]string, error){
@@ -81,7 +87,7 @@ func trim(list []string, length int) []string {
 	newList := []string{}
 	for i, p := range list{
 		if i <= length -1 {
-			log.Printf("[INFO] Adding song: %d -- %s\n", i, p)
+			log.Printf("[INFO] Adding song: %d -- %s\n", i+1, p)
 			newList = append(newList, p)
 		}
 	}
@@ -104,14 +110,33 @@ func checkPlayerStatus()(running bool){
 	return false
 }
 
-/* future overrides from flags
-func killTimer(minutes time.Duration){
-	time.Sleep(time.Minute * minutes)
+
+func starKillTimer(minutes int){
+	time.Sleep(time.Duration(minutes) * time.Minute)
+
+	if err := killPlayer(); err != nil{
+		log.Printf("[WARN] %s\n", err)
+	}
 }
 
-func killPlayer() (output string, err error) {
-	bytes, err := exec.Command("pkill", "omxplayer").Output()
-	output = string(bytes)
-	return
+
+func killPlayer() error {
+	found := false
+	ps, _ := process.Processes()
+
+	for _, p := range ps{
+		name, _ := p.Name()
+		if name == "player"{
+			if err := p.Terminate(); err != nil{
+				return err
+			}
+			log.Printf("[INFO] stopped omxplayer pid %d\n", p.Pid)
+			found = true
+		}
+	}
+
+	if !found{
+		return fmt.Errorf("unable to find omxplayer process")
+	}
+	return nil
 }
-*/
