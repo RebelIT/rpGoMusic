@@ -45,6 +45,6 @@
 
     - name: restart service
       service:
-        name: gpio18
+        name: player
         state: restarted
         enabled: true
