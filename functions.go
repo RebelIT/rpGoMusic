@@ -87,7 +87,7 @@ func trim(list []string, length int) []string {
 	newList := []string{}
 	for i, p := range list{
 		if i <= length -1 {
-			log.Printf("[INFO] Adding song: %d -- %s\n", i, p)
+			log.Printf("[INFO] Adding song: %d -- %s\n", i+1, p)
 			newList = append(newList, p)
 		}
 	}
