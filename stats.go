@@ -22,7 +22,7 @@ func sendCounter(measurement string, tags statsd.Option){
 	s.Increment(measurement)
 }
 
-func sendHistogram(measurement string, tags statsd.Option, value int){
+func sendGauge(measurement string, tags statsd.Option, value int){
 	var c = config
 	if c.Statsd == ""{
 		log.Println("ignoring histogram metric")
@@ -36,7 +36,7 @@ func sendHistogram(measurement string, tags statsd.Option, value int){
 		log.Print(err)
 	}
 	defer s.Close()
-	s.Histogram(measurement, value)
+	s.Gauge(measurement, value)
 }
 
 func statSongPlay(song string){
@@ -64,5 +64,5 @@ func statRuntime(seconds int){
 	//emits a new histogram for total runtime
 	tags := statsd.Tags()
 	measurement := "player_runtime"
-	sendHistogram(measurement,tags, seconds)
+	sendGauge(measurement,tags, seconds)
 }
