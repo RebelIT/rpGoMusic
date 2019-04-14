@@ -41,28 +41,28 @@ func sendGauge(measurement string, tags statsd.Option, value int){
 
 func statSongPlay(song string){
 	//emits a new counter for every song played
-	tags := statsd.Tags("song", song)
+	tags := statsd.Tags("song", song, "app", "player")
 	measurement := "player_song"
 	sendCounter(measurement,tags)
 }
 
 func statStartProgram(){
 	//emits a new counter for every time the button is pushed
-	tags := statsd.Tags()
+	tags := statsd.Tags("app", "player")
 	measurement := "player_started"
 	sendCounter(measurement,tags)
 }
 
 func statError(function string){
 	//emits a new counter for every error in the program
-	tags := statsd.Tags("function",function)
+	tags := statsd.Tags("function",function, "app", "player")
 	measurement := "player_error"
 	sendCounter(measurement,tags)
 }
 
 func statRuntime(seconds int){
 	//emits a new histogram for total runtime
-	tags := statsd.Tags()
+	tags := statsd.Tags("app", "player")
 	measurement := "player_runtime"
 	sendGauge(measurement,tags, seconds)
 }
