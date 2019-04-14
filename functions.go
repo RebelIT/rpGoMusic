@@ -21,11 +21,13 @@ func playSong(songPath string) error {
 	cmd := exec.Command(player, args...)
 	err := cmd.Start()
 	if err != nil {
+		statError("playSong")
 		log.Fatal(err)
 	}
 	log.Printf("[INFO] Waiting for song to finish\n")
 	err = cmd.Wait()
 	if err != nil{
+		statError("playSong")
 		log.Printf("[ERROR] Song finished with error: %v\n", err)
 		return err
 	}
@@ -37,6 +39,7 @@ func createPlaylist(dir string, numberOfSongs int, useTimePlay bool) (playlist [
 
 	playlist, err := getAllSongs(dir)
 	if err != nil{
+		statError("createPlaylist")
 		log.Printf("[ERROR] creating playlist\n")
 		return nil, err
 	}
@@ -58,6 +61,7 @@ func getAllSongs(dir string) ([]string, error){
 	if err != nil {
 		log.Printf("[ERROR] Unable to read music directory: %s\n",dir)
 		log.Println(err)
+		statError("getAllSongs")
 		return nil, err
 	}
 
@@ -115,6 +119,7 @@ func starKillTimer(minutes int){
 	time.Sleep(time.Duration(minutes) * time.Minute)
 
 	if err := killPlayer(); err != nil{
+		statError("starKillTimer")
 		log.Printf("[WARN] %s\n", err)
 	}
 }
@@ -128,6 +133,7 @@ func killPlayer() error {
 		name, _ := p.Name()
 		if name == "player"{
 			if err := p.Terminate(); err != nil{
+				statError("killPlayer")
 				return err
 			}
 			log.Printf("[INFO] stopped omxplayer pid %d\n", p.Pid)
@@ -136,7 +142,13 @@ func killPlayer() error {
 	}
 
 	if !found{
+		statError("killPlayer")
 		return fmt.Errorf("unable to find omxplayer process")
 	}
 	return nil
+}
+
+func timeDiff(start time.Time, end time.Time) (duration int){
+	s := start.Sub(end).Seconds()
+	return int(s)
 }

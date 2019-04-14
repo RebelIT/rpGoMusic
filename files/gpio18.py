@@ -10,5 +10,5 @@ while True:
     input_state = GPIO.input(18)
     if input_state == False:
         print('Start Playing Music')
-        subprocess.Popen(["/etc/apps/player/player"])
+        subprocess.Popen(["/etc/apps/player/player", "-statsdHost", "127.0.0.1:8125"])
         time.sleep(0.2)
