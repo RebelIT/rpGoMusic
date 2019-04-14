@@ -54,9 +54,20 @@
   pruneopts = "UT"
   revision = "81d4e9dc473e5e8c933f2aaeba2a3d81efb9aed2"
 
+[[projects]]
+  digest = "1:38b469493eb173db9c03321d64adcad4c7991ea0a19b5edc5bdc094f0e8c7384"
+  name = "gopkg.in/alexcesaro/statsd.v2"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "7fea3f0d2fab1ad973e641e51dba45443a311a90"
+  version = "v2.0.0"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  input-imports = ["github.com/shirou/gopsutil/process"]
+  input-imports = [
+    "github.com/shirou/gopsutil/process",
+    "gopkg.in/alexcesaro/statsd.v2",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
